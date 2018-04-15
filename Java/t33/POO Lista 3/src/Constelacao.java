@@ -19,7 +19,7 @@ private ArrayList<Estrela> star;										//nomear o arraylist da classe Estrela
 		for(Estrela e: star) {											//para cada índice do vetor star, são atribuídos os três atributos listados
 																		//abaixo, extraídos da classe Estrela
             System.out.println("Nome: " + e.getNome());				    //recebe os valores do atributo "nome" da classe Estrela
-            System.out.println("Temperatura: " + e.getTemp() + "ºC");	//recebe os valores do atributo "temp" da classe Estrela
+            System.out.println("Temperatura: " + e.getTemp() + " K");	//recebe os valores do atributo "temp" da classe Estrela
             System.out.println("Cor: " + e.getCor());					//recebe os valores do atributo "cor" da classe Estrela
             System.out.println();                                      //apenas para pular linha			
 		}		

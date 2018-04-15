@@ -2,13 +2,13 @@
 public class Teste {
 
 	public static void main(String[] args) {
-		Estrela e1 = new Estrela("Dubhe",65.0,"azul");
-		Estrela e2 = new Estrela("Merak",30.0,"amarela");
-		Estrela e3 = new Estrela("Phecda",40.0,"rosa");
-		Estrela e4 = new Estrela("Megrez",50.0,"laranja");
-		Estrela e5 = new Estrela("Alioth",60.0,"marrom");
-		Estrela e6 = new Estrela("Mizar",30.0,"vermelha");
-		Estrela e7 = new Estrela("Alkaid ou Benetnasch",45.0,"verde");
+		Estrela e1 = new Estrela("Dubhe",5600,"Amarela");
+		Estrela e2 = new Estrela("Merak",7000,"Branca");
+		Estrela e3 = new Estrela("Phecda",6500,"Branca");
+		Estrela e4 = new Estrela("Megrez",6350,"Branca");
+		Estrela e5 = new Estrela("Alioth",8000,"Branca azulada");
+		Estrela e6 = new Estrela("Mizar",6200,"Branca");
+		Estrela e7 = new Estrela("Alkaid ou Benetnasch",8500,"Branca azulada");
 		Constelacao c = new Constelacao();									
 		c.introducao();														//início do programa
 		c.adicionar(e1);
