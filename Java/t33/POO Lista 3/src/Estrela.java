@@ -24,9 +24,9 @@ public class Estrela {
     
     public void mostrar() {
     	System.out.println("Nome: " + nome);
-    	System.out.println("Temperatura: " + temp + "ºC");
+    	System.out.println("Temperatura: " + temp + "ÂºC");
     	System.out.println("Cor: " + cor);
-    	System.out.println();                                      //apenas para pular linha
+    	System.out.println();                                      
     }
     
     
