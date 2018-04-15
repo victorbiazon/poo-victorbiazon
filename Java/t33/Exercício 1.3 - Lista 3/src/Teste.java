@@ -23,6 +23,6 @@ public class Teste {
 		e3.mostrar();
 		e4.mostrar();
 		c.infoEstrelas();
-		c.tempConstelacao();
+		c.mostraTempConstelacao();
 	}
 }
