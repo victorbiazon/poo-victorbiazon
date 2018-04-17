@@ -1,15 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package ursamaior
 
-/**
- *
- * @author victo
- */
 class Teste {
     
     static void main(String[] args){
@@ -21,7 +11,7 @@ class Teste {
 		Estrela e6 = new Estrela("Mizar",6200,"Branca")
 		Estrela e7 = new Estrela("Alkaid ou Benetnasch",8500,"Branca azulada")
 		Constelacao c = new Constelacao()								
-		c.introducao()											//início do programa
+		c.introducao()											
 		c.adicionar(e1)
 		c.adicionar(e2)
 		c.adicionar(e3)
