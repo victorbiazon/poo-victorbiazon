@@ -35,7 +35,7 @@ private ArrayList<Estrela> star;
     
     public void introducao() {
     	System.out.println("CONSTELAÇÃO URSA MAIOR");
-    	System.out.println();										   //apenas para pular linha
+    	System.out.println();										   
     	System.out.println("Lista de estrelas desta constelação, com suas respectivas temperaturas e cores: ");
     	System.out.println();
     }
