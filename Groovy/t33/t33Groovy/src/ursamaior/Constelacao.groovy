@@ -14,9 +14,7 @@ class Constelacao {
    def infoEstrelas(){
         println("Informacoes das estrelas desta constelacao: ");
         for(Estrela e: star){
-            println "Nome = " + e.getNome()
-            println "Temperatura = " + e.getTemp()
-            println "Cor = " + e.getCor();
+            e.mostrar();
             println()
         }
     }   
