@@ -8,20 +8,20 @@ class Constelacao {
     }
     
    def adicionar(Estrela e){
-        star.add(e);
+        star.add(e)
     }
     
    def infoEstrelas(){
-        println("Informacoes das estrelas desta constelacao: ");
+        println("Informacoes das estrelas desta constelacao: ")
+	println()
         for(Estrela e: star){
-            e.mostrar();
-            println()
+            e.mostrar()
         }
     }   
     def tempConstelacao(){
         double total = 0
         for(Estrela e: star){
-             total += e.getTemp();
+             total += e.getTemp()
         }
          println "Soma das temperaturas das estrelas listadas: " + total
             
