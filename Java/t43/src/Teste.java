@@ -7,10 +7,12 @@ public class Teste {
 		ICMS i2 = new ICMS("Bolacha",4);
 		IPI ip1 = new IPI("Carne",27);
 		IPI ip2 = new IPI("Café",13);
-		i1.exibir();
-		i2.exibir();
-		ip1.exibir();
-		ip2.exibir();
-		
+	
+		Colecao c = new Colecao();
+		c.adicionar(i1);
+		c.adicionar(i2);
+		c.adicionar(ip1);
+		c.adicionar(ip2);
+		c.infoProduto();
 	}
 }
