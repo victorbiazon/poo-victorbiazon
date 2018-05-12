@@ -1,9 +1,5 @@
 
-public class Imposto extends Produto {
-
-	protected Imposto(String nome,double preco){
-		super(nome,preco);
-	}
+public class Imposto {
 	
 	protected double aliquota() {
 		return 1.0;

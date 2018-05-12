@@ -14,10 +14,8 @@ public class Colecao {
 	
 	public void infoProduto() {
 		for(Produto p: prod) {
-			if(p instanceof ICMS)
-				((ICMS) p).exibir();
-			else
-				((IPI) p).exibir();			
+			p.exibir();				
 		}
 	}
+
 }

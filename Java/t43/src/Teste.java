@@ -3,16 +3,15 @@ public class Teste {
 
 	public static void main(String[] args) {
 		
-		ICMS i1 = new ICMS("Chá",10);
-		ICMS i2 = new ICMS("Bolacha",4);
-		IPI ip1 = new IPI("Carne",27);
-		IPI ip2 = new IPI("Café",13);
-	
+		Produto p1 = new Produto("Chá",1200,new IPI());
+		Produto p2 = new Produto("Bolacha",1000,new ICMS());
+		Produto p3 = new Produto("Café",3000,new IPI());
+		Produto p4 = new Produto("Carne",10000,new IPI());
 		Colecao c = new Colecao();
-		c.adicionar(i1);
-		c.adicionar(i2);
-		c.adicionar(ip1);
-		c.adicionar(ip2);
-		c.infoProduto();
+		c.adicionar(p1);
+		c.adicionar(p2);
+		c.adicionar(p3);
+		c.adicionar(p4);
+		c.infoProduto();		
 	}
 }
