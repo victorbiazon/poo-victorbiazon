@@ -19,7 +19,7 @@ public class ProdutoDAO {
 	}
 	
 	
-	public void createCliente() throws SQLException {
+	public void createProduto() throws SQLException {
 		String sql = "CREATE TABLE Produto ( "
 				+ "id serial CONSTRAINT key PRIMARY KEY, "
 				+ "nome varchar(30), "
