@@ -20,7 +20,7 @@ public class ClienteDAO {
 	
 	
 	public void createCliente() throws SQLException {
-		String sql = "CREATE TABLE CLiente ( "
+		String sql = "CREATE TABLE Cliente ( "
 				+ "id serial CONSTRAINT key PRIMARY KEY, "
 				+ "nome varchar(30) );";
 		PreparedStatement ps = conn.prepareStatement(sql);
@@ -46,6 +46,37 @@ public class ClienteDAO {
 		return new Cliente(rs.getInt("id"),
 							rs.getString("nome"));
 	}	
+	 
+	public String buscaNome(int id) throws SQLException {
+		String sql = "SELECT nome from Cliente WHERE id=?;";
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ps.setInt(1, id);
+		ResultSet rs = ps.executeQuery();
+		return rs.getString("nome");
+	}
+	
+	public boolean buscaId(int id) throws SQLException {
+		String sql = "SELECT id from Cliente WHERE id=?;";
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ps.setInt(1, id);
+		ResultSet rs = ps.executeQuery();
+		if(rs.getInt("id")==id) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	public int getTamanho() throws SQLException {
+		String sql = "SELECT count(*) FROM Cliente;";
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ResultSet rs = ps.executeQuery();
+		int retorno = 0;
+		while(rs.next()) {
+			retorno = rs.getInt("COUNT");
+		}
+		return retorno;
+	}
 	
 	
 	public void listar() throws SQLException {
@@ -55,9 +86,8 @@ public class ClienteDAO {
 		while(rs.next()) {
 			System.out.println(rs.getObject("id"));
 			System.out.println(rs.getObject("nome"));
-			System.out.println(rs.getObject("sobrenome"));
-			ps.close();
 		}
+		ps.close();
 	}
 	
 	 public void deletarCliente(int id) throws SQLException {

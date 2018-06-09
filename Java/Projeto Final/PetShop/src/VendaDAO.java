@@ -11,13 +11,20 @@ public class VendaDAO {
 		conn = ConnectionFactory.getConnection();
 	}
 	
+	public void dropVenda() throws SQLException {
+		String sql = "DROP TABLE Venda";
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ps.execute();
+		ps.close();
+	}
+	
 	public void createVenda() throws SQLException {
 		String sql = "CREATE TABLE Venda ( "
 				+ "id serial CONSTRAINT key PRIMARY KEY, "
 				+ "idProduto numeric, "
 				+ "qtdade numeric, "
 				+ "idCliente numeric, "
-				+ "precoVenda numeric";
+				+ "precoVenda numeric );";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.execute();
 		ps.close();
@@ -45,6 +52,17 @@ public class VendaDAO {
 				rs.getInt("qtdade"),
 				rs.getInt("idCliente"),
 				rs.getDouble("precoVenda"));
+	}
+	
+	public int getTamanho() throws SQLException {
+		String sql = "SELECT count(*) FROM Venda;";
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ResultSet rs = ps.executeQuery();
+		int retorno = 0;
+		while(rs.next()) {
+			retorno = rs.getInt("COUNT");
+		}
+		return retorno;
 	}
 	
 	public void listar() throws SQLException {

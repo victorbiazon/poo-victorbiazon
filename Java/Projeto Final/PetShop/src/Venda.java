@@ -13,6 +13,13 @@ public class Venda {
 		this.idCliente = idCliente;
 		this.precoVenda = precoVenda;
 	}
+	
+	public Venda(int idProduto, int qtdade, int idCliente, double precoVenda) {
+		this.idProduto = idProduto;
+		this.qtdade = qtdade;
+		this.idCliente = idCliente;
+		this.precoVenda = precoVenda;
+	}
 
 	public int getId() {
 		return id;
