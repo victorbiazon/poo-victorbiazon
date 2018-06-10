@@ -21,6 +21,8 @@ public class MenuPetShop {
 	}
 	
 	public void menu() throws SQLException {
+		
+		do{
 		System.out.println("1- Cadastro Cliente;\n"
 				+ "2- Cadastro Produto;\n"
 				+ "3- Catálogo de Produtos;\n"
@@ -121,6 +123,7 @@ public class MenuPetShop {
 			vdao.listar();
 			break;
 		}
+		}while(opcao!=6);
 		
 	}
 	
