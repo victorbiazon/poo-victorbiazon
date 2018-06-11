@@ -21,7 +21,7 @@ public class ProdutoDAO {
 	
 	public void createProduto() throws SQLException {
 		String sql = "CREATE TABLE Produto ( "
-				+ "id serial CONSTRAINT key PRIMARY KEY, "
+				+ "idproduto serial PRIMARY KEY, "
 				+ "nome varchar(30), "
 				+ "preco numeric ,"
 				+ "tipo varchar(7) );";
@@ -31,7 +31,7 @@ public class ProdutoDAO {
 	}
 	
 	public void insert(Produto c) throws SQLException {
-		String sql = "INSERT INTO Cliente (nome,preco,servico) "
+		String sql = "INSERT INTO Produto (nome,preco,tipo) "
 				+ "VALUES (?,?,?);";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.setString(1, c.getNome());
@@ -43,25 +43,27 @@ public class ProdutoDAO {
 	
 	
 	 public Produto listarUmProduto(int id) throws SQLException {
-		String sql = "SELECT * from Produto WHERE id=?;";
+		String sql = "SELECT * from Produto WHERE idproduto=?;";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.setInt(1, id);
 		ResultSet rs = ps.executeQuery();
-		return new Produto(rs.getInt("id"),
+		return new Produto(rs.getInt("idproduto"),
 							rs.getString("nome"),
 							rs.getDouble("preco"),
 							rs.getString("tipo"));
 	}
 	 
-	public Produto listarPorTipo(String servico) throws SQLException {
+	public void listarPorTipo(String servico) throws SQLException {
 		String sql = "SELECT * from Produto WHERE tipo=?;";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.setString(1, servico);
 		ResultSet rs = ps.executeQuery();
-		return new Produto(rs.getInt("id"),
-							rs.getString("nome"),
-							rs.getDouble("preco"),
-							rs.getString("tipo"));
+		while(rs.next()) {
+			System.out.println("Código: " + rs.getObject("idproduto"));
+			System.out.println("Produto: " + rs.getObject("nome"));
+			System.out.println("Preço: R$" + String.format("%.2f", rs.getDouble("preco")));
+			System.out.println("--------------");
+		}
 	}
 	
 	public int getTamanho() throws SQLException {
@@ -75,32 +77,68 @@ public class ProdutoDAO {
 		return retorno;
 	}
 	
-	public boolean buscaId(int id) throws SQLException {
-		String sql = "SELECT id from Produto WHERE id=?;";
+	public int buscaId(int id) throws SQLException, Exception {
+		String sql = "SELECT idproduto from Produto WHERE idproduto=?;";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.setInt(1, id);
 		ResultSet rs = ps.executeQuery();
-		if(rs.getInt("id")==id) {
-			return true;
-		}else {
-			return false;
+		boolean retorno = false;
+		while(rs.next()) {
+			if(rs.getInt("idproduto")==id) {
+				retorno = true;
+			}else {
+				retorno = false;
+			}
 		}
+		ps.close();
+		if(retorno)
+			return id;
+		else
+			throw new Exception("Produto não encontrado!");
+			
+	}
+	
+	public String validarNome(String nome) throws SQLException, Exception{
+		String sql = "SELECT nome from Produto WHERE nome=?;";
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ps.setString(1, nome);
+		ResultSet rs = ps.executeQuery();
+		boolean retorno = false;
+		while(rs.next()) {
+			if(rs.getString("nome").equals(nome))
+				retorno = true;
+			else
+				retorno = false;
+		}
+		ps.close();
+		if(!retorno)
+			return nome;
+		else
+			throw new Exception("Produto já existe");
 	}
 	
 	public String buscaNome(int id) throws SQLException {
-		String sql = "SELECT nome from Produto WHERE id=?;";
+		String sql = "SELECT nome from Produto WHERE idproduto=?;";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.setInt(1, id);
 		ResultSet rs = ps.executeQuery();
-		return rs.getString("nome");
+		String resultado = "";
+		while(rs.next()) {
+			resultado = rs.getString("nome");
+		}
+		return resultado;
 	}
 	
 	public double buscaPreco(int id) throws SQLException {
-		String sql = "SELECT preco from Produto WHERE id=?;";
+		String sql = "SELECT preco from Produto WHERE idproduto=?;";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.setInt(1, id);
 		ResultSet rs = ps.executeQuery();
-		return rs.getDouble("preco");
+		double retorno = 0;
+		while(rs.next()) {
+			retorno = rs.getDouble("preco");
+		}
+		return retorno;
 	}
 	
 	
@@ -109,32 +147,33 @@ public class ProdutoDAO {
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
 		while(rs.next()) {
-			System.out.println(rs.getObject("id"));
+			System.out.println(rs.getObject("idproduto"));
 			System.out.println(rs.getObject("nome"));
 			System.out.println(rs.getObject("preco"));
-			ps.close();
+			System.out.println(rs.getObject("tipo"));
 		}
+		ps.close();
 	}
 	
 	 public void deletarProduto(int id) throws SQLException {
-		String sql = "DELETE from Produto WHERE id=?;";
+		String sql = "DELETE from Produto WHERE idproduto=?;";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.setInt(1, id);
 		ps.execute();
 		ps.close();
 	}	
 	 
-	 public void alterarNomeProduto(int id, String nome) throws SQLException {
-			String sql = "UPDATE Produto SET nome =? WHERE id=?;";
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setString(1, nome);
-			ps.setInt(2, id);
-			ps.execute();
-			ps.close();
-	 }
+	public void alterarNomeProduto(int id, String nome) throws SQLException {
+		String sql = "UPDATE Produto SET nome =? WHERE idproduto=?;";
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ps.setString(1, nome);
+		ps.setInt(2, id);
+		ps.execute();
+		ps.close();
+	}
 	 
 	 public void alterarPrecoProduto(int id, Double preco) throws SQLException {
-		 String sql = "UPDATE Produto SET preco =? WHERE id=?;";
+		 String sql = "UPDATE Produto SET preco =? WHERE idproduto=?;";
 		 PreparedStatement ps = conn.prepareStatement(sql);
 		 ps.setDouble(1, preco);
 		 ps.setInt(2, id);

@@ -20,7 +20,7 @@ public class VendaDAO {
 	
 	public void createVenda() throws SQLException {
 		String sql = "CREATE TABLE Venda ( "
-				+ "id serial CONSTRAINT key PRIMARY KEY, "
+				+ "idvenda serial PRIMARY KEY, "
 				+ "idProduto numeric, "
 				+ "qtdade numeric, "
 				+ "idCliente numeric, "
@@ -43,11 +43,11 @@ public class VendaDAO {
 	}
 	
 	public Venda listarUmaVenda(int id) throws SQLException {
-		String sql = "SELECT * from Venda WHERE id=?;";
+		String sql = "SELECT * from Venda WHERE idvenda=?;";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.setInt(1, id);
 		ResultSet rs = ps.executeQuery();
-		return new Venda(rs.getInt("id"),
+		return new Venda(rs.getInt("idvenda"),
 				rs.getInt("idProduto"),
 				rs.getInt("qtdade"),
 				rs.getInt("idCliente"),
@@ -65,16 +65,37 @@ public class VendaDAO {
 		return retorno;
 	}
 	
+	public Venda listarUltimaVenda() throws SQLException {
+		String sql = "SELECT * from Venda;";
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ResultSet rs = ps.executeQuery();
+		Venda v=null;
+		while(rs.next()) {
+			if(rs.isLast()) {
+				v = new Venda(rs.getInt("idvenda"),
+						rs.getInt("idProduto"),
+						rs.getInt("qtdade"),
+						rs.getInt("idCliente"),
+						rs.getDouble("precoVenda"));
+			}
+		}
+		return v;
+	}
+	
 	public void listar() throws SQLException {
 		String sql = "SELECT * from Venda;";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
+		ProdutoDAO pdao = new ProdutoDAO();
+		ClienteDAO cdao = new ClienteDAO();
 		while(rs.next()) {
-			System.out.println(rs.getObject("id"));
-			System.out.println(rs.getObject("idProduto"));
-			System.out.println(rs.getObject("qtdade"));
-			System.out.println(rs.getObject("idCliente"));
-			System.out.println(rs.getObject("precoVenda"));
+			System.out.println("Venda: " + rs.getObject("idvenda"));
+			System.out.println("Cliente: " + cdao.buscaNome(rs.getInt("idCliente")));
+			System.out.println("Produto: " + pdao.buscaNome(rs.getInt("idProduto")));
+			System.out.println("Preço: R$" + String.format("%.2f", rs.getDouble("precoVenda")));
+			System.out.println("Quantidade: " + rs.getObject("qtdade"));
+			System.out.println("Valor total: R$ " + String.format("%.2f", rs.getInt("qtdade")*rs.getDouble("precoVenda")));
+			System.out.println("--------------------");
 		}
 	}
 	

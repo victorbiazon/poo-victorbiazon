@@ -21,7 +21,7 @@ public class ClienteDAO {
 	
 	public void createCliente() throws SQLException {
 		String sql = "CREATE TABLE Cliente ( "
-				+ "id serial CONSTRAINT key PRIMARY KEY, "
+				+ "idcliente serial PRIMARY KEY, "
 				+ "nome varchar(30) );";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.execute();
@@ -38,33 +38,89 @@ public class ClienteDAO {
 	}
 	
 	
-	 public Cliente listarUmCliente(int id) throws SQLException {
-		String sql = "SELECT * from Cliente WHERE id=?;";
+	 public void listarUmCliente(int id) throws SQLException {
+		String sql = "SELECT * from Cliente WHERE idcliente=?;";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.setInt(1, id);
 		ResultSet rs = ps.executeQuery();
-		return new Cliente(rs.getInt("id"),
-							rs.getString("nome"));
+		while(rs.next()) {
+			System.out.println("Código: " + rs.getInt("idcliente"));
+			System.out.println("Nome: " + rs.getString("nome"));
+		}
 	}	
 	 
 	public String buscaNome(int id) throws SQLException {
-		String sql = "SELECT nome from Cliente WHERE id=?;";
+		String sql = "SELECT nome from Cliente WHERE idcliente=?;";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.setInt(1, id);
 		ResultSet rs = ps.executeQuery();
-		return rs.getString("nome");
+		String retorno="";
+		while(rs.next()){
+			retorno = rs.getString("nome");
+		}
+		ps.close();
+		return retorno;
 	}
 	
-	public boolean buscaId(int id) throws SQLException {
-		String sql = "SELECT id from Cliente WHERE id=?;";
+	public String validarNome(String nome) throws SQLException, Exception{
+		String sql = "SELECT nome from Cliente WHERE nome=?;";
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ps.setString(1, nome);
+		ResultSet rs = ps.executeQuery();
+		boolean retorno = false;
+		while(rs.next()) {
+			if(rs.getString("nome").equals(nome))
+				retorno = true;
+			else
+				retorno = false;
+		}
+		ps.close();
+		if(!retorno)
+			return nome;
+		else
+			throw new Exception("Usuário já existe");
+	}
+	
+	public int buscaId(int id) throws SQLException, Exception {
+		String sql = "SELECT idcliente from Cliente WHERE idcliente=?;";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.setInt(1, id);
 		ResultSet rs = ps.executeQuery();
-		if(rs.getInt("id")==id) {
-			return true;
-		}else {
-			return false;
+		boolean retorno = false;
+		while(rs.next()) {
+			if(rs.getInt("idcliente")==id) {
+				retorno = true;
+			}else {
+				retorno = false;
+			}
 		}
+		ps.close();
+		if(retorno)
+			return id;
+		else
+			throw new Exception("Cliente não encontrado!");
+			
+	}
+	
+	public int buscaNomeId(String nome) throws SQLException, Exception {
+		String sql = "SELECT * from Cliente WHERE nome=?;";
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ps.setString(1, nome);
+		ResultSet rs = ps.executeQuery();
+		int retorno = 0;
+		boolean valido = false;
+		while(rs.next()) {
+			if(rs.getString("nome").equals(nome)) {
+				valido = true;
+				retorno = rs.getInt("idcliente");
+			}
+		}
+		ps.close();
+		if(valido)
+			return retorno;
+		else
+			throw new Exception("Cliente não encontrado!");
+			
 	}
 	
 	public int getTamanho() throws SQLException {
@@ -84,28 +140,29 @@ public class ClienteDAO {
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery(); //sempre que for select "executeQuery"
 		while(rs.next()) {
-			System.out.println(rs.getObject("id"));
-			System.out.println(rs.getObject("nome"));
+			System.out.println("Código: " + rs.getObject("idcliente"));
+			System.out.println("Nome: " + rs.getObject("nome"));
+			System.out.println("--------------");
 		}
 		ps.close();
 	}
 	
 	 public void deletarCliente(int id) throws SQLException {
-		String sql = "DELETE from Cliente WHERE id=?;";
+		String sql = "DELETE from Cliente WHERE idcliente=?;";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.setInt(1, id);
 		ps.execute();
 		ps.close();
 	}	
 	 
-	 public void alterarNomeCliente(int id, String nome) throws SQLException {
-			String sql = "UPDATE Cliente SET nome =? WHERE id=?;";
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setString(1, nome);
-			ps.setInt(2, id);
-			ps.execute();
-			ps.close();
-		}	
+	public void alterarNomeCliente(int id, String nome) throws SQLException {
+		String sql = "UPDATE Cliente SET nome =? WHERE idcliente=?;";
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ps.setString(1, nome);
+		ps.setInt(2, id);
+		ps.execute();
+		ps.close();
+	}	
 	 
 	 public void fechar() throws SQLException {
 		 conn.close();		 
