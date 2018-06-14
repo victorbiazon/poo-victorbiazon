@@ -8,3 +8,6 @@ public class ConnectionFactory {
 		return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres","postgres","0310vab");
 	}
 }
+
+//jdbc:postgresql://localhost:5432/postgres","postgres","0310vab"
+//"jdbc:postgresql://10.66.32.4:5107/postgres","postgres","123"

@@ -22,17 +22,23 @@ public class ClienteDAO {
 	public void createCliente() throws SQLException {
 		String sql = "CREATE TABLE Cliente ( "
 				+ "idcliente serial PRIMARY KEY, "
-				+ "nome varchar(30) );";
+				+ "nome varchar(30), "
+				+ "login varchar(30), "
+				+ "senha varchar(30), "
+				+ "tipousuario varchar(3) );";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.execute();
 		ps.close();
 	}
 	
 	public void insert(Cliente c) throws SQLException {
-		String sql = "INSERT INTO Cliente (nome) "
-				+ "VALUES (?);";
+		String sql = "INSERT INTO Cliente (nome,login,senha,tipousuario) "
+				+ "VALUES (?,?,?,?);";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.setString(1, c.getNome());
+		ps.setString(2, c.getLogin());
+		ps.setString(3, c.getSenha());
+		ps.setString(4, c.getTipoUsuario());
 		ps.execute();
 		ps.close();
 	}
@@ -62,6 +68,39 @@ public class ClienteDAO {
 		return retorno;
 	}
 	
+	public String buscaTipoUsuario(String login) throws SQLException {
+		String sql = "SELECT tipousuario from Cliente WHERE login=?;";
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ps.setString(1, login);
+		ResultSet rs = ps.executeQuery();
+		String retorno="";
+		while(rs.next()){
+			retorno = rs.getString("tipousuario");
+		}
+		ps.close();
+		return retorno;
+	}
+	
+	public boolean login(String login, String senha) throws SQLException, Exception{
+		String sql = "SELECT * from Cliente WHERE login=? AND senha=?;";
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ps.setString(1, login);
+		ps.setString(2, senha);
+		ResultSet rs = ps.executeQuery();
+		boolean retorno = false;
+		while(rs.next()) {
+			if(rs.getString("login").equals(login)&&rs.getString("senha").equals(senha))
+				retorno = true;
+			else
+				retorno = false;
+		}
+		ps.close();
+		if(retorno)
+			return retorno;
+		else
+			throw new Exception("Usuário ou senha incorretos");
+	}
+	
 	public String validarNome(String nome) throws SQLException, Exception{
 		String sql = "SELECT nome from Cliente WHERE nome=?;";
 		PreparedStatement ps = conn.prepareStatement(sql);
@@ -79,6 +118,25 @@ public class ClienteDAO {
 			return nome;
 		else
 			throw new Exception("Usuário já existe");
+	}
+	
+	public String validarLogin(String login) throws SQLException, Exception{
+		String sql = "SELECT login from Cliente WHERE login=?;";
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ps.setString(1, login);
+		ResultSet rs = ps.executeQuery();
+		boolean retorno = false;
+		while(rs.next()) {
+			if(rs.getString("login").equals(login))
+				retorno = true;
+			else
+				retorno = false;
+		}
+		ps.close();
+		if(!retorno)
+			return login;
+		else
+			throw new Exception("Username já está em uso");
 	}
 	
 	public int buscaId(int id) throws SQLException, Exception {

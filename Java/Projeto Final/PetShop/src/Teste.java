@@ -3,7 +3,7 @@ import java.sql.SQLException;
 public class Teste {
 
 	public static void main(String[] args) throws SQLException {
-		//Cliente c = new Cliente("victor");
+		//Cliente c = new Cliente("Victor","victor","031094","adm");
 		//Cliente c1 = new Cliente("joao");
 		//ClienteDAO cdao = new ClienteDAO();
 		//ProdutoDAO pdao = new ProdutoDAO();
