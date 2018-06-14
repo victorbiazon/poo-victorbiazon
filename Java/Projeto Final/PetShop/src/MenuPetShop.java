@@ -536,8 +536,8 @@ public class MenuPetShop {
 	}
 	
 	public void menu() throws SQLException{
-		if(cdao.getTamanho()!=0) {
-			do {
+		do {
+			if(cdao.getTamanho()!=0) {
 				login();
 				switch(cdao.buscaTipoUsuario(login)) {
 				case "adm":
@@ -552,11 +552,47 @@ public class MenuPetShop {
 				}
 				if(opcao==8)
 					entrada.nextLine();
-			}while(opcao==8);
-		}
-		else {
-			menuAdm();//Para ser possível o cadastro de um usuário na primeira utilização
-		}
+			}
+			else {//Para ser possível o cadastro de um usuário na primeira utilização
+				System.out.println("Primeiro Acesso - Cadastre o Usuário Adm:\n");
+				do {
+					nomeCliente=null;
+					System.out.println("Digite o nome:");
+					try {
+						nomeCliente = cdao.validarNome(entrada.next());
+					}catch(Exception e) {
+						System.out.println(e.getMessage());
+					}
+				}while(nomeCliente==null);
+				do {
+					login=null;
+					entrada.nextLine();
+					System.out.println("Digite o username:");
+					try {
+						login = cdao.validarLogin(entrada.next());
+					}catch(Exception e) {
+						System.out.println(e.getMessage());
+					}
+				}while(login==null);
+				do {
+					senha=null;
+					entrada.nextLine();
+					System.out.println("Digite a senha:");
+					senha = entrada.next();
+					System.out.println("Digite novamente a senha:");
+					try {
+						validarSenha(senha,entrada.next());
+					}catch(Exception e) {
+						System.out.println(e.getMessage());
+						senha = null;
+					}
+				}while(senha==null);
+				cdao.insert((Cliente)new Administrador(nomeCliente,login,senha,"adm"));
+				System.out.println("Usuário cadastrado com sucesso!");
+				opcao = 8;
+				entrada.nextLine();
+			}
+		}while(opcao==8);
 	}
 	
 	private void validarServico(String servico) throws Exception{
